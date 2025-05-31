@@ -1,4 +1,4 @@
-# Ecommerce Test Automation Project (Hamzat.ma)
+# Ecommerce Test Automation Project (Hmizate.ma)
 
 ## 📌 Objective
 Automated test suite using Selenium + TestNG + Maven.
