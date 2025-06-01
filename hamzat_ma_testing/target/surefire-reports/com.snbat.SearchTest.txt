@@ -1,4 +1,27 @@
 -------------------------------------------------------------------------------
 Test set: com.snbat.SearchTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.061 s - in com.snbat.SearchTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.409 s <<< FAILURE! - in com.snbat.SearchTest
+com.snbat.SearchTest.testRechercheProduit  Time elapsed: 0.314 s  <<< ERROR!
+org.openqa.selenium.remote.NoSuchDriverException: 
+Unable to obtain: chromedriver, error chromedriver must exist: C:\Users\othma\Desktop\licence_GL\S6\test et validation\chromedriver-win64\chromedriver-win64\chromedriver.exe
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location/
+Build info: version: '4.20.0', revision: '866c76ca80'
+System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.10'
+Driver info: driver.version: ChromeDriver
+	at org.openqa.selenium.remote.service.DriverFinder.getBinaryPaths(DriverFinder.java:121)
+	at org.openqa.selenium.remote.service.DriverFinder.getDriverPath(DriverFinder.java:55)
+	at org.openqa.selenium.chrome.ChromeDriver.generateExecutor(ChromeDriver.java:99)
+	at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:88)
+	at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:83)
+	at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:51)
+	at com.snbat.SearchTest.setUp(SearchTest.java:21)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: java.lang.IllegalStateException: chromedriver must exist: C:\Users\othma\Desktop\licence_GL\S6\test et validation\chromedriver-win64\chromedriver-win64\chromedriver.exe
+	at org.openqa.selenium.internal.Require$FileStateChecker.isFile(Require.java:346)
+	at org.openqa.selenium.internal.Require$FileStateChecker.isExecutable(Require.java:368)
+	at org.openqa.selenium.remote.service.DriverFinder.getBinaryPaths(DriverFinder.java:118)
+	... 9 more
+
