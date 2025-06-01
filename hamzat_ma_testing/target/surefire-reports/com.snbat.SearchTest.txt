@@ -1,6 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: com.snbat.SearchTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.409 s <<< FAILURE! - in com.snbat.SearchTest
 com.snbat.SearchTest.testRechercheProduit  Time elapsed: 0.314 s  <<< ERROR!
 org.openqa.selenium.remote.NoSuchDriverException: 
@@ -25,3 +26,6 @@ Caused by: java.lang.IllegalStateException: chromedriver must exist: C:\Users\ot
 	at org.openqa.selenium.remote.service.DriverFinder.getBinaryPaths(DriverFinder.java:118)
 	... 9 more
 
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.897 s - in com.snbat.SearchTest
+>>>>>>> a00aebbb63e6b7fcc16a5dc5df2cb141f6c9f538
