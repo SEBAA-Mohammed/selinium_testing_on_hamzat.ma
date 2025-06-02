@@ -1,2 +1,5 @@
 com\snbat\SearchTest.class
+com\snbat\LoginTest.class
 com\snbat\AppTest.class
+com\snbat\FilterTest.class
+com\snbat\LogoutTest.class

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: com.snbat.SearchTest
+Test set: com.snbat.FilterTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.558 s - in com.snbat.SearchTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 91.521 s - in com.snbat.FilterTest

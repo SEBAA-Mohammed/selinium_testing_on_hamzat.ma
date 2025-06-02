@@ -12,6 +12,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.snbat.utils.Config;
+
 public class LogoutTest {
     private WebDriver driver;
     private WebDriverWait wait;
@@ -19,7 +21,7 @@ public class LogoutTest {
     @BeforeEach
     public void setUp() {
         System.setProperty("webdriver.chrome.driver",
-                "C:/Users/hp/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe");
+        Config.get("chromedriver.path"));
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
