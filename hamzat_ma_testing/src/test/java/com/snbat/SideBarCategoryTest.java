@@ -190,13 +190,7 @@ public class SideBarCategoryTest {
                     System.out.println("Premier produit: " + name + " - " + price);
                     System.out.println("Lien du produit: " + productUrl);
 
-                    if (expectedCategoryName.equalsIgnoreCase("Objets connectés")) {
-                        if (name.toLowerCase().contains("xiaomi") || productUrl.contains("xiaomi")) {
-                            System.out.println("✅ Produit Xiaomi détecté dans la catégorie Objets connectés.");
-                        } else {
-                            System.out.println("❌ Aucun produit Xiaomi trouvé dans Objets connectés !");
-                        }
-                    }
+
 
                 } catch (Exception e) {
                     System.out.println("Détails du premier produit non disponibles");
