@@ -1,6 +1,7 @@
 package com.snbat;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,107 +81,11 @@ public class SignupTest {
         // Handle potential ad vignette
         Thread.sleep(2000); // Consider replacing with explicit wait
 
-        // Handle different types of ads that might appear
-        if (driver.getCurrentUrl().contains("google_vignette") || driver.getCurrentUrl().contains("doubleclick")
-                || driver.getTitle().toLowerCase().contains("ad") || isAdPresent()) {
-            System.out.println("Ad detected. Attempting to dismiss...");
+        closeGoogleAdIfPresent();
 
-            boolean adDismissed = false;
-
-            // Type 1: Google Vignette SVG close button
-            if (!adDismissed) {
-                try {
-                    WebElement svgCloseBtn = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.xpath(
-                                    "//div[@style='cursor: pointer;']//svg//path[@d='M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z']")));
-                    svgCloseBtn.click();
-                    System.out.println("Ad dismissed - Type 1: Google Vignette SVG close button.");
-                    adDismissed = true;
-                } catch (Exception e) {
-                    // Continue to next type
-                }
-            }
-
-            // Type 2: Close button with ID "dismiss-button"
-            if (!adDismissed) {
-                try {
-                    WebElement dismissBtn = wait
-                            .until(ExpectedConditions.elementToBeClickable(By.id("dismiss-button")));
-                    dismissBtn.click();
-                    System.out.println("Ad dismissed - Type 2: ID dismiss-button.");
-                    adDismissed = true;
-                } catch (Exception e) {
-                    // Continue to next type
-                }
-            }
-
-            // Type 3: Close button with "Fermer" text
-            if (!adDismissed) {
-                try {
-                    WebElement fermerBtn = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.xpath(
-                                    "//*[contains(text(), 'Fermer') and (@role='button' or @tabindex='0' or contains(@class, 'close') or contains(@class, 'button'))]")));
-                    fermerBtn.click();
-                    System.out.println("Ad dismissed - Type 3: Fermer text button.");
-                    adDismissed = true;
-                } catch (Exception e) {
-                    // Continue to next type
-                }
-            }
-
-            // Type 4: Generic close button patterns
-            if (!adDismissed) {
-                try {
-                    WebElement genericCloseBtn = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.xpath(
-                                    "//div[contains(@class, 'close-button') or contains(@class, 'dismiss') or contains(@aria-label, 'close') or contains(@aria-label, 'Fermer')]")));
-                    genericCloseBtn.click();
-                    System.out.println("Ad dismissed - Type 4: Generic close button.");
-                    adDismissed = true;
-                } catch (Exception e) {
-                    // Continue to next type
-                }
-            }
-
-            // Type 5: Skip button or any button containing skip/skip text
-            if (!adDismissed) {
-                try {
-                    WebElement skipBtn = wait.until(ExpectedConditions.elementToBeClickable(
-                            By.xpath(
-                                    "//*[contains(text(), 'Skip') or contains(text(), 'Ignorer') or contains(text(), 'Passer')]")));
-                    skipBtn.click();
-                    System.out.println("Ad dismissed - Type 5: Skip button.");
-                    adDismissed = true;
-                } catch (Exception e) {
-                    // Continue to final fallback
-                }
-            }
-
-            // Type 6: JavaScript fallback for cursor pointer divs
-            if (!adDismissed) {
-                try {
-                    WebElement jsCloseBtn = driver.findElement(By.xpath("//div[@style='cursor: pointer;']"));
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", jsCloseBtn);
-                    System.out.println("Ad dismissed - Type 6: JavaScript click on cursor pointer div.");
-                    adDismissed = true;
-                } catch (Exception e) {
-                    System.out.println("All ad dismiss attempts failed.");
-                }
-            }
-
-            // Wait for ad to close and navigate back to signup page
-            if (adDismissed) {
-                Thread.sleep(2000); // Wait for ad to close
-                // Only redirect if we're still on an ad page
-                if (!driver.getCurrentUrl().contains("hmizate.ma") ||
-                        driver.getCurrentUrl().contains("google_vignette") ||
-                        driver.getCurrentUrl().contains("doubleclick")) {
-                    driver.get("https://hmizate.ma/inscription");
-                }
-            } else {
-                // If no ad dismiss worked, try to navigate directly
-                driver.get("https://hmizate.ma/inscription");
-            }
+        // After attempting to close the ad, ensure we are on the signup page
+        if (!driver.getCurrentUrl().contains("hmizate.ma/inscription")) {
+            driver.get("https://hmizate.ma/inscription");
         }
 
         // Fill the form with proper waits
@@ -188,12 +93,39 @@ public class SignupTest {
         // Select "M." gender radio button (value="1")
         // Find the "M." gender radio button by locating the label containing "M."
         // Locate the radio button using a CSS selector
+
         WebElement radioButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.cssSelector("input[name='id_gender'][value='1']")));
 
         // Alternative XPath locator (uncomment if needed)
         WebElement _radioButton = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//input[@name='id_gender' and @value='1']")));
+
+        try {
+            WebElement cookieNotice = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.cssSelector("div.tvcmscookies-notice[style*='display: block']")));
+
+            WebElement acceptCookiesBtn = cookieNotice.findElement(By.cssSelector("button, a")); // Adjust selector
+            if (acceptCookiesBtn.isDisplayed()) {
+                acceptCookiesBtn.click();
+                System.out.println("✅ Cookie notice dismissed.");
+                Thread.sleep(1000); // Wait for UI update
+            }
+        } catch (Exception e) {
+            System.out.println("ℹ️ No cookie notice to dismiss or failed to locate.");
+        }
+        WebElement radioBtn = driver.findElement(By.xpath("//input[@name='id_gender' and @value='1']"));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", radioBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", radioBtn);
+
+        System.out.println("✅ Clicked radio button with JS.");
+
+        WebElement label = driver.findElement(By.xpath("//label[contains(.,'M.')]"));
+        label.click();
+        WebElement customSpan = driver
+                .findElement(By.xpath("//input[@name='id_gender' and @value='1']/following-sibling::span"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", customSpan);
 
         // Click the radio button if it's not already selected
         if (!radioButton.isSelected()) {
@@ -214,19 +146,20 @@ public class SignupTest {
 
         WebElement firstNameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("firstname")));
         firstNameField.clear();
-        firstNameField.sendKeys("Ayman");
+        firstNameField.sendKeys("roumaissae");
 
         WebElement lastNameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("lastname")));
         lastNameField.clear();
-        lastNameField.sendKeys("Aarab Aarab");
+        lastNameField.sendKeys("roumaissae");
 
         WebElement emailField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("email")));
         emailField.clear();
-        emailField.sendKeys("Aarab_aymane_test@example.com");
+        emailField.sendKeys("roumaissae@mailna.co");
 
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
         passwordField.clear();
-        passwordField.sendKeys("0688115325");
+        passwordField.sendKeys("0677153021");
+        // Wait for the form to be ready before filling it
 
         System.out.println("Form filled successfully.");
 
@@ -239,7 +172,8 @@ public class SignupTest {
         // Click the Register button
         WebElement registerButton = wait.until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("button.tvall-inner-btn.form-control-submit[data-link-action='save-customer']")));
-        registerButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", registerButton);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", registerButton);
         // Wait for possible redirect after registration
         wait.until(ExpectedConditions.urlContains("hmizate.ma"));
 
@@ -254,6 +188,31 @@ public class SignupTest {
             System.out.println("Registration failed or did not redirect to homepage.");
         }
 
+    }
+
+    private void closeGoogleAdIfPresent() {
+        List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
+
+        for (WebElement iframe : iframes) {
+            try {
+                driver.switchTo().frame(iframe);
+
+                List<WebElement> dismissButtons = driver.findElements(By.cssSelector("#dismiss-button"));
+                if (!dismissButtons.isEmpty()) {
+                    WebElement dismissButton = dismissButtons.get(0);
+                    if (dismissButton.isDisplayed() && dismissButton.isEnabled()) {
+                        dismissButton.click();
+                        System.out.println("✅ Google ad closed inside iframe.");
+                        break;
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println("⚠️ Error switching to iframe: " + e.getMessage());
+            } finally {
+                driver.switchTo().defaultContent();
+            }
+        }
     }
 
     @AfterEach
