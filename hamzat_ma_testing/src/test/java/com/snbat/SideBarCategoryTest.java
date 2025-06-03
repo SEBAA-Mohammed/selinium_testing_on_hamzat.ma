@@ -1,15 +1,14 @@
 package com.snbat;
 
-import org.testng.annotations.*;
-
-import com.snbat.utils.Config;
-
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.snbat.utils.Config;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -28,10 +27,9 @@ public class SideBarCategoryTest {
             "Sport & Loisir",
             "Mode & Accessoires",
             "Bébé & Jouets",
-            "Maison & Décoration"
-    );
+            "Maison & Décoration");
 
-    @BeforeMethod
+    @BeforeEach
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", Config.get("chromedriver.path"));
 
@@ -48,7 +46,7 @@ public class SideBarCategoryTest {
         options.setExperimentalOption("useAutomationExtension", false);
 
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));  // Augmenté
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30)); // Augmenté
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         actions = new Actions(driver);
@@ -63,7 +61,8 @@ public class SideBarCategoryTest {
 
             acceptCookies();
 
-            List<WebElement> mainCategories = driver.findElements(By.cssSelector("ul.tvverticalmenu-dropdown > li.level-1"));
+            List<WebElement> mainCategories = driver
+                    .findElements(By.cssSelector("ul.tvverticalmenu-dropdown > li.level-1"));
             System.out.println("Nombre de catégories principales trouvées: " + mainCategories.size());
 
             List<Integer> indicesValides = new ArrayList<>();
@@ -72,13 +71,16 @@ public class SideBarCategoryTest {
                 WebElement category = mainCategories.get(i);
                 String categoryName = "";
                 try {
-                    categoryName = category.findElement(By.cssSelector("div.tvvertical-menu-category")).getText().trim();
-                } catch (Exception ignored) {}
+                    categoryName = category.findElement(By.cssSelector("div.tvvertical-menu-category")).getText()
+                            .trim();
+                } catch (Exception ignored) {
+                }
 
                 if (CATEGORIES_AUTORISEES.contains(categoryName)) {
                     indicesValides.add(i);
                 } else {
-                    System.out.println("Catégorie ignorée: " + (categoryName.isEmpty() ? "(vide ou non lisible)" : categoryName));
+                    System.out.println(
+                            "Catégorie ignorée: " + (categoryName.isEmpty() ? "(vide ou non lisible)" : categoryName));
                 }
             }
 
@@ -93,7 +95,7 @@ public class SideBarCategoryTest {
         }
     }
 
-    @AfterMethod
+    @AfterEach
     public void tearDown() {
         if (driver != null) {
             driver.quit();
@@ -114,8 +116,10 @@ public class SideBarCategoryTest {
 
     private void testCategoryInPlace(int index) {
         try {
-            List<WebElement> categories = driver.findElements(By.cssSelector("ul.tvverticalmenu-dropdown > li.level-1"));
-            if (index >= categories.size()) return;
+            List<WebElement> categories = driver
+                    .findElements(By.cssSelector("ul.tvverticalmenu-dropdown > li.level-1"));
+            if (index >= categories.size())
+                return;
 
             WebElement category = categories.get(index);
             if (!category.isDisplayed()) {
@@ -126,7 +130,8 @@ public class SideBarCategoryTest {
             String categoryName = "Catégorie " + (index + 1);
             try {
                 categoryName = category.findElement(By.cssSelector("div.tvvertical-menu-category")).getText().trim();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
 
             System.out.println("\n--- Test de la catégorie: " + categoryName + " ---");
 
@@ -179,10 +184,12 @@ public class SideBarCategoryTest {
                     WebElement firstProduct = products.get(0);
                     String name = firstProduct.findElement(By.cssSelector("h6, h3, .product-title")).getText().trim();
                     String productUrl = firstProduct.findElement(By.cssSelector("a")).getAttribute("href").trim();
-                    String price = firstProduct.findElement(By.cssSelector("span.price, .product-price")).getText().trim();
+                    String price = firstProduct.findElement(By.cssSelector("span.price, .product-price")).getText()
+                            .trim();
 
                     System.out.println("Premier produit: " + name + " - " + price);
                     System.out.println("Lien du produit: " + productUrl);
+
 
 
                 } catch (Exception e) {
@@ -191,7 +198,8 @@ public class SideBarCategoryTest {
             }
 
             try {
-                WebElement productCount = driver.findElement(By.cssSelector("div.tv-total-product p.tv-total-product-number"));
+                WebElement productCount = driver
+                        .findElement(By.cssSelector("div.tv-total-product p.tv-total-product-number"));
                 System.out.println("Nombre de produits: " + productCount.getText());
             } catch (Exception e) {
                 System.out.println("Nombre de produits: (inconnu)");

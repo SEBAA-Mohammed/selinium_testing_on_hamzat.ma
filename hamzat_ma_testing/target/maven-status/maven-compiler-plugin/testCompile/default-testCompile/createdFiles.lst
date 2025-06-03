@@ -1,6 +1,8 @@
+com\snbat\SideBarCategoryTest.class
 com\snbat\SearchTest.class
 com\snbat\CartTest.class
 com\snbat\LoginTest.class
-com\snbat\AppTest.class
 com\snbat\FilterTest.class
 com\snbat\LogoutTest.class
+com\snbat\SignupTest.class
+com\snbat\AppTest.class
