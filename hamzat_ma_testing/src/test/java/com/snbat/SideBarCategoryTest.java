@@ -54,6 +54,7 @@ public class SideBarCategoryTest {
 
     @Test
     public void testCategories() throws InterruptedException {
+        long start = System.currentTimeMillis();
         try {
             System.out.println("Chargement de hmizate.ma...");
             driver.get("https://hmizate.ma/");
@@ -92,7 +93,11 @@ public class SideBarCategoryTest {
         } catch (Exception e) {
             System.out.println("Erreur générale: " + e.getMessage());
             e.printStackTrace();
-        }
+        }finally {
+        long end = System.currentTimeMillis();
+        long duration = (end - start);
+        System.out.println("=============================================== \n ⏱ Temps total du test: " + (duration / 1000.0) + " secondes");
+    }
     }
 
     @AfterEach
