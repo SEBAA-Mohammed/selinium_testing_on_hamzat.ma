@@ -22,7 +22,6 @@ public class FilterTest {
 
     @BeforeEach
     void setUp() {
-        //System.setProperty("webdriver.chrome.driver", "C:/Users/Adnan/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", Config.get("chromedriver.path"));
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -30,7 +29,7 @@ public class FilterTest {
     }
 
     @Test
-    public void testPriceFilter() throws InterruptedException {
+    public void testPriceFilter() {
         try{
             driver.get("https://hmizate.ma/");
 
@@ -52,26 +51,11 @@ public class FilterTest {
             WebElement rightHandle = handles.get(3);
             actions.clickAndHold(rightHandle).moveByOffset(offsetMax, 0).release().perform();
 
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("products")));
-            actions.sendKeys(Keys.PAGE_DOWN).build().perform();
-            while (true) {
-                try {
-                    WebElement backToTop = driver.findElement(By.id("tv-back-top-wrapper"));
-                    if (backToTop.isDisplayed()) {
-                        break;
-                    }
-                } catch (NoSuchElementException e) {
-                    // L'élément n'est pas encore présent dans le DOM, on continue à scroller
-                }
-
-                actions.sendKeys(Keys.PAGE_DOWN).build().perform();
-                Thread.sleep(500);
-            }
-
 
             List<WebElement> priceElements = driver.findElements(By.cssSelector(".price"));
 
             System.out.println("Displayed product prices:");
+
             for (int i = 0; i < priceElements.size(); i++) {
                 String refreshedPrice = driver.findElements(By.className("price")).get(i).getText();
 
