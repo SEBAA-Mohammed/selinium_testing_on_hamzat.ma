@@ -3,3 +3,6 @@
 .idea/
 
 config.properties
+hamzat_ma_testing/target/test-classes/com/snbat/
+hamzat_ma_testing/target/classes/com/snbat/   
+hamzat_ma_testing/target
